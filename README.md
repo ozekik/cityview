@@ -4,10 +4,10 @@ CityJSON loader and renderer for three.js, react-three-fiber, and Jupyter Notebo
 
 ## Packages
 
-| Package Name   | Description                      |
-|----------------|----------------------------------|
-| cityview       | Python package                   |
-| three-cityjson | JavaScript / TypeScript package  |
+|  Package Name  | Description |
+|----------------|-------------|
+| [cityview](https://github.com/ozekik/cityview) | Python package |
+| [three-cityjson](https://github.com/ozekik/cityview/tree/master/packages/three-cityjson) | JavaScript / TypeScript package |
 
 ## Roadmap
 
