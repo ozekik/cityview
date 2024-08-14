@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "node ./build.mjs",
+    "dev": "nodemon --watch src/ --exec \"pnpm run build\" --ext js,json,ts,tsx,css",
+    "typecheck": "tsc --noEmit",
+    "loader": "pnpm -F \"three-cityjson\""
+  },
+  "type": "module",
+  "dependencies": {
+    "@anywidget/react": "^0.0.4",
+    "@react-three/drei": "^9.109.5",
+    "@react-three/fiber": "^8.17.5",
+    "maplibre-gl": "^4.5.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.162.0",
+    "three-cityjson": "workspace:*"
+  },
+  "devDependencies": {
+    "@jupyter-widgets/base": "^6.0.8",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.162.0",
+    "esbuild": "^0.19.12",
+    "nodemon": "^3.1.4",
+    "typescript": "^5.5.4"
+  }
+}

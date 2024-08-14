@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "cityview"
+version = "0.1.0"
+description = "CityJSON renderer for Jupyter Notebook / JupyterLab"
+authors = ["Kentaro Ozeki <32771324+ozekik@users.noreply.github.com>"]
+homepage = "https://github.com/ozekik/cityview/"
+repository = "https://github.com/ozekik/cityview"
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "cityview" }]
+include = ["cityview/static/*.js", "cityview/static/*.css"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+anywidget = {extras = ["dev"], version = "^0.9.3"}
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.4"
+jupyterlab = "^4.1.5"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+coverage = { extras = ["toml"], version = "^7.4.4" }
+pytest-cov = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,60 @@
+{
+  "name": "three-cityjson",
+  "description": "CityJSON loader for three.js and react-three-fiber",
+  "version": "0.1.0",
+  "type": "module",
+  "author": "Kentaro Ozeki",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozekik/cityview"
+  },
+  "files": [
+    "dist",
+    "NOTICE.txt"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/three-cityjson.umd.cjs",
+      "import": "./dist/three-cityjson.js"
+    }
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.109.5",
+    "@react-three/fiber": "^8.17.5",
+    "jotai": "^2.9.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.162.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.15",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.162.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "leva": "^0.9.35",
+    "mapbox-gl": "^3.5.2",
+    "maplibre-gl": "^4.5.2",
+    "react-map-gl": "^7.1.7",
+    "react-three-map": "^0.8.2",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.0.3",
+    "vite-plugin-lib-inject-css": "^2.1.1"
+  }
+}
