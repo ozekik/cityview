@@ -1,6 +1,6 @@
 {
   "name": "three-cityjson",
-  "description": "CityJSON loader for three.js and react-three-fiber",
+  "description": "CityJSON loader and viewer for three.js and react-three-fiber",
   "version": "0.1.0",
   "type": "module",
   "author": "Kentaro Ozeki",

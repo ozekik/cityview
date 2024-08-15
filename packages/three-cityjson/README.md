@@ -1,6 +1,14 @@
 # three-cityjson
 
-> CityJSON loader for three.js and react-three-fiber
+CityJSON loader and viewer for three.js and react-three-fiber
+
+## Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Loader](#loader)
+  - [Viewer](#viewer)
+- [License](#license)
 
 ## Installation
 
@@ -10,7 +18,9 @@ npm install three-cityjson
 
 ## Usage
 
-### Basic
+### Loader
+
+#### Three.js
 
 ```javascript
 import { CityJSONLoader } from "three-cityjson";
@@ -21,14 +31,27 @@ loader.load("path/to/yourfile.city.json", (cityjson) => {
 });
 ```
 
-### React-three-fiber
+#### React-three-fiber
 
 ```javascript
 import { CityJSONLoader } from "three-cityjson";
 import { useLoader } from "@react-three/fiber";
 
-const cityjson = useLoader(CityJSONLoader, "path/to/yourfile.city.json");
+export default function Component() {
+  const {
+    geometries,
+    vertexCount,
+    indexCount,
+    origin: modelOrigin,
+  } = useLoader(CityJSONLoader, "path/to/yourfile.city.json");
+
+  return <></>;
+}
 ```
+
+### Viewer
+
+WIP
 
 ## License
 
