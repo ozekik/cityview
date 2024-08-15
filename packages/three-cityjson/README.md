@@ -1,5 +1,7 @@
 # three-cityjson
 
+[![npm](https://img.shields.io/npm/v/three-cityjson)](https://www.npmjs.com/package/three-cityjson)
+
 CityJSON loader and viewer for three.js and react-three-fiber
 
 ## Contents
