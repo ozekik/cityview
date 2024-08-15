@@ -1,5 +1,6 @@
 import importlib.metadata
 
+from .layers.cityjson import CityJSONLayer
 from .view import MapView, VirtualView
 
 try:
@@ -7,4 +8,4 @@ try:
 except importlib.metadata.PackageNotFoundError:
     __version__ = "unknown"
 
-__all__ = ["MapView", "VirtualView"]
+__all__ = ["MapView", "VirtualView", "CityJSONLayer"]

@@ -24,6 +24,9 @@ class BaseView(anywidget.AnyWidget):
     data = traitlets.Unicode().tag(sync=True)
     click = traitlets.Dict(allow_none=True).tag(sync=True)
 
+    layers = traitlets.List()
+    _layers = traitlets.List().tag(sync=True)
+
 
 class MapView(BaseView):
     map_style = traitlets.Unicode().tag(sync=True)
@@ -64,8 +67,8 @@ class MapView(BaseView):
 
         super().__init__()
 
-    def update(self, data: str):
-        self.data = data
+    def update(self):
+        self._layers = list(map(lambda x: x.serialize(), self.layers))
 
 
 class VirtualView(BaseView):
@@ -93,5 +96,8 @@ class VirtualView(BaseView):
 
         super().__init__()
 
-    def update(self, data: str):
-        self.data = data
+    def update(self):
+        self._layers = list(map(lambda x: x.serialize(), self.layers))
+
+    # def update(self, data: str):
+    #     self.data = data

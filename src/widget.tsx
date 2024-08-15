@@ -2,13 +2,25 @@ import { createRender, useModelState } from "@anywidget/react";
 import { ThreeEvent } from "@react-three/fiber";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { MapView, VirtualView } from "three-cityjson";
+import { MapView, VirtualView, CityJSONLayer } from "three-cityjson";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
+function deserializeLayer(serializedLayer: any) {
+  const { type, ..._args } = serializedLayer;
+
+  let args = Object.entries(_args).reduce((acc, [key, value]) => {
+    // console.log(key, value);
+    return value === null ? acc : { ...acc, [key]: value };
+  }, {});
+
+  console.log("args.format", args.format);
+
+  return new CityJSONLayer(args.data, args.format);
+}
+
 const render = createRender(() => {
   // const [initialViewState] = useModelState<any>("_initial_view_state");
-  // const [_layers] = useModelState<any[]>("_layers");
   const [mode] = useModelState<string>("mode");
 
   const [width] = useModelState<number | string>("width");
@@ -17,22 +29,17 @@ const render = createRender(() => {
   const [theme] = useModelState<"light" | "dark">("theme");
   const [mapStyle] = useModelState<string>("map_style");
 
-  const [data] = useModelState<string>("data");
+  // const [data] = useModelState<string>("data");
+  const [_layers] = useModelState<any[]>("_layers");
   const [_click, setClick] = useModelState<any>("click");
 
-  const [objectUrl, setObjectUrl] = useState<string>();
-
-  // const [layers, updateLayers] = useState<any[]>([]);
-  // const [_click, setClick] = useModelState<any>("click");
+  const [layers, updateLayers] = useState<CityJSONLayer[]>([]);
 
   useEffect(() => {
-    let dataUrl = URL.createObjectURL(new Blob([data], { type: "text/plain" }));
-    if (true) {
-      dataUrl += "#format=jsonl";
-    }
-    console.log("dataUrl", dataUrl);
-    setObjectUrl(dataUrl);
-  }, [data]);
+    console.log("_layers", _layers);
+    const deserializedLayers = _layers.map((layer) => deserializeLayer(layer));
+    updateLayers(deserializedLayers);
+  }, [_layers]);
 
   const handleObjectClick = useCallback((ev: ThreeEvent<MouseEvent>) => {
     // ev.stopPropagation();
@@ -49,10 +56,6 @@ const render = createRender(() => {
     setClick(cityObject);
   }, []);
 
-  if (!objectUrl) {
-    return null;
-  }
-
   return mode === "map" ? (
     <div
       style={{
@@ -61,7 +64,7 @@ const render = createRender(() => {
       }}
     >
       <MapView
-        url={objectUrl}
+        layers={layers}
         theme={theme}
         mapStyle={mapStyle}
         onClick={handleObjectClick}
@@ -74,7 +77,7 @@ const render = createRender(() => {
         height: Number.isFinite(height) ? `${height}px` : height,
       }}
     >
-      <VirtualView url={objectUrl} theme={theme} onClick={handleObjectClick} />
+      <VirtualView layers={layers} theme={theme} onClick={handleObjectClick} />
     </div>
   );
 });
