@@ -14,9 +14,8 @@ import { useAtom } from "jotai";
 import { originAtom } from "../store";
 
 import "maplibre-gl/dist/maplibre-gl.css";
+import { CityJSONLayer } from "../layers/CityJSONLayer";
 import { themes } from "../themes";
-
-const theme = themes.dark;
 
 function Lighting() {
   const { camera, scene } = useThree();
@@ -43,13 +42,13 @@ const MAP_STYLES = {
 };
 
 export default function MapView({
-  url,
+  layers,
   theme: themeName = "dark",
   mapStyle: _mapStyle = "dark",
   onClick,
   children,
 }: {
-  url: string;
+  layers: CityJSONLayer[];
   children?: React.ReactNode;
   theme: "light" | "dark";
   mapStyle?: "light" | "dark";
@@ -72,6 +71,10 @@ export default function MapView({
   // useEffect(() => {
   //   console.log("origin(App)", origin);
   // }, [origin]);
+
+  const urls = useMemo(() => {
+    return layers.map((layer) => layer.getUrl());
+  }, [layers]);
 
   return (
     <Map
@@ -96,7 +99,16 @@ export default function MapView({
         <AdaptiveDpr pixelated />
         <Coordinates latitude={origin.lat || 0} longitude={origin.lon || 0}>
           <ambientLight intensity={2} />
-          <TooltipCityObject3D url={url} colors={colors} onClick={onClick} />
+          {urls.map((url) => {
+            return (
+              <TooltipCityObject3D
+                url={url}
+                colors={colors}
+                onClick={onClick}
+              />
+            );
+          })}
+          {/* <TooltipCityObject3D url={url} colors={colors} onClick={onClick} /> */}
           <Lighting />
           {children}
         </Coordinates>

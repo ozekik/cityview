@@ -8,18 +8,19 @@ import { DirectionalLight } from "three";
 // import { useAtom } from "jotai";
 // import { originAtom } from "../store";
 
+import { CityJSONLayer } from "../layers/CityJSONLayer";
 import { themes } from "../themes";
 import Controls from "./Controls";
 import TooltipCityObject3D from "./TooltipCityObject3D";
 
 export default function VirtualView({
-  url,
+  layers,
   theme: themeName = "light",
   background: _background,
   onClick,
   children,
 }: {
-  url: string;
+  layers: CityJSONLayer[];
   theme: "light" | "dark";
   background?: string;
   onClick?: (ev: ThreeEvent<MouseEvent>) => void;
@@ -54,6 +55,10 @@ export default function VirtualView({
     return light;
   }, []);
 
+  const urls = useMemo(() => {
+    return layers.map((layer) => layer.getUrl());
+  }, [layers]);
+
   return (
     <div
       style={{
@@ -81,7 +86,11 @@ export default function VirtualView({
         <AdaptiveDpr pixelated />
         <Controls />
         <ambientLight intensity={2} />
-        <TooltipCityObject3D url={url} colors={colors} onClick={onClick} />
+        {urls.map((url) => {
+          return (
+            <TooltipCityObject3D url={url} colors={colors} onClick={onClick} />
+          );
+        })}
         {children}
       </Canvas>
       {/* <div

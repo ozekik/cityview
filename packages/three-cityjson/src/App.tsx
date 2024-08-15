@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MapView from "./components/MapView";
 import VirtualView from "./components/VirtualView";
+import { CityJSONLayer } from "./layers/CityJSONLayer";
 import { useControls } from "leva";
 
 const url = "/sample/daiba_sta.city.jsonl";
@@ -13,7 +14,7 @@ function App() {
     theme: { options: { light: "light", dark: "dark" } },
   });
 
-  const [dataUrl, setDataUrl] = useState<string>();
+  const [layers, setLayers] = useState<CityJSONLayer[]>([]);
 
   // Fetch the CityJSON file from the url
   useEffect(() => {
@@ -21,14 +22,17 @@ function App() {
       const response = await fetch(url);
       const text = await response.text();
       // console.log("CityJSON", text);
-      let dataUrl = URL.createObjectURL(
-        new Blob([text], { type: "text/plain" }),
-      );
-      if (url.endsWith(".jsonl")) {
-        dataUrl += "#format=jsonl";
-      }
-      // console.log("dataUrl", dataUrl);
-      setDataUrl(dataUrl);
+      const layer = new CityJSONLayer(text, "cityjsonseq");
+      console.log("CityJSONLayer", layer);
+      setLayers([layer]);
+      // let dataUrl = URL.createObjectURL(
+      //   new Blob([text], { type: "text/plain" }),
+      // );
+      // if (url.endsWith(".jsonl")) {
+      //   dataUrl += "#format=jsonl";
+      // }
+      // // console.log("dataUrl", dataUrl);
+      // setDataUrl(dataUrl);
     })();
   }, []);
 
@@ -42,19 +46,18 @@ function App() {
         justifyContent: "center",
       }}
     >
-      {dataUrl &&
-        (mode === "map" ? (
-          <div
-            style={{
-              width: "900px",
-              height: "600px",
-            }}
-          >
-            <MapView url={dataUrl} theme={theme} mapStyle={theme}></MapView>
-          </div>
-        ) : (
-          <VirtualView url={dataUrl} theme={theme}></VirtualView>
-        ))}
+      {mode === "map" ? (
+        <div
+          style={{
+            width: "900px",
+            height: "600px",
+          }}
+        >
+          <MapView layers={layers} theme={theme} mapStyle={theme}></MapView>
+        </div>
+      ) : (
+        <VirtualView layers={layers} theme={theme}></VirtualView>
+      )}
     </div>
   );
 }
