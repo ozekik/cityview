@@ -101,7 +101,7 @@ view
 
 ## Roadmap
 
-TBA
+- [ ] Online viewer
 
 ## License
 
