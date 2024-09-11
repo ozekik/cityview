@@ -2,7 +2,9 @@ import { createRender, useModelState } from "@anywidget/react";
 import { ThreeEvent } from "@react-three/fiber";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { MapView, VirtualView, CityJSONLayer } from "three-cityjson";
+import root from "react-shadow";
+
+import { CityJSONLayer, MapView, VirtualView } from "three-cityjson";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -56,29 +58,28 @@ const render = createRender(() => {
     setClick(cityObject);
   }, []);
 
-  return mode === "map" ? (
-    <div
+  return (
+    <root.div
       style={{
         width: Number.isFinite(width) ? `${width}px` : width,
         height: Number.isFinite(height) ? `${height}px` : height,
       }}
     >
-      <MapView
-        layers={layers}
-        theme={theme}
-        mapStyle={mapStyle}
-        onClick={handleObjectClick}
-      />
-    </div>
-  ) : (
-    <div
-      style={{
-        width: Number.isFinite(width) ? `${width}px` : width,
-        height: Number.isFinite(height) ? `${height}px` : height,
-      }}
-    >
-      <VirtualView layers={layers} theme={theme} onClick={handleObjectClick} />
-    </div>
+      {mode === "map" ? (
+        <MapView
+          layers={layers}
+          theme={theme}
+          mapStyle={mapStyle}
+          onClick={handleObjectClick}
+        />
+      ) : (
+        <VirtualView
+          layers={layers}
+          theme={theme}
+          onClick={handleObjectClick}
+        />
+      )}
+    </root.div>
   );
 });
 
