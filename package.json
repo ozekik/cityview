@@ -8,22 +8,22 @@
   },
   "type": "module",
   "dependencies": {
-    "@anywidget/react": "^0.0.4",
-    "@react-three/drei": "^9.109.5",
-    "@react-three/fiber": "^8.17.5",
-    "maplibre-gl": "^4.5.2",
+    "@anywidget/react": "0.0.8",
+    "@react-three/drei": "^9.112.0",
+    "@react-three/fiber": "^8.17.7",
+    "maplibre-gl": "^4.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "three": "^0.162.0",
     "three-cityjson": "workspace:*"
   },
   "devDependencies": {
-    "@jupyter-widgets/base": "^6.0.8",
-    "@types/react": "^18.3.3",
+    "@jupyter-widgets/base": "^6.0.10",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@types/three": "^0.162.0",
     "esbuild": "^0.19.12",
     "nodemon": "^3.1.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   }
 }
