@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cityview"
-version = "0.1.0"
+version = "0.2.0"
 description = "CityJSON renderer for Jupyter Notebook / JupyterLab"
 authors = ["Kentaro Ozeki <32771324+ozekik@users.noreply.github.com>"]
 homepage = "https://github.com/ozekik/cityview/"
