@@ -3,7 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/cityview.svg)](https://pypi.org/project/cityview/)
 [![npm](https://img.shields.io/npm/v/three-cityjson)](https://www.npmjs.com/package/three-cityjson)
 
-CityJSON loader and renderer for three.js, react-three-fiber, and Jupyter Notebook / JupyterLab.
+CityJSON loader and renderer for [Three.js](https://threejs.org/), [React-three-fiber](https://github.com/pmndrs/react-three-fiber), and [Jupyter Notebook / JupyterLab](https://jupyter.org/).
 
 Supports [CityJSON format](https://www.cityjson.org/) and [CityJSONSeq format](https://www.cityjson.org/cityjsonseq/).
 

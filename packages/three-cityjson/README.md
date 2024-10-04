@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/three-cityjson)](https://www.npmjs.com/package/three-cityjson)
 
-CityJSON loader and viewer for three.js and react-three-fiber
+CityJSON loader and viewer for [Three.js](https://threejs.org/) and [React-three-fiber](https://github.com/pmndrs/react-three-fiber)
 
 ## Contents
 
