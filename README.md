@@ -17,10 +17,10 @@ Supports [CityJSON format](https://www.cityjson.org/) and [CityJSONSeq format](h
 
 ## Packages
 
-|  Package Name  | Description |
-|----------------|-------------|
-| [cityview](https://github.com/ozekik/cityview) (top-level package) | Python package |
-| [three-cityjson](https://github.com/ozekik/cityview/tree/master/packages/three-cityjson) | JavaScript / TypeScript package |
+|  Package Name  | Description | Registry |
+|----------------|-------------|------------|
+| [cityview](https://github.com/ozekik/cityview) (top-level package) | Python package | [![PyPI](https://img.shields.io/pypi/v/cityview.svg)](https://pypi.org/project/cityview/) |
+| [three-cityjson](https://github.com/ozekik/cityview/tree/master/packages/three-cityjson) | JavaScript / TypeScript package | [![npm](https://img.shields.io/npm/v/three-cityjson)](https://www.npmjs.com/package/three-cityjson) |
 
 ## Installation
 
