@@ -26,7 +26,7 @@ export class CityJSONLayer extends BaseLayer {
         new Blob([data], { type: "text/plain" }),
       );
       if (this.format === "cityjsonseq") {
-        dataUrl += "#format=jsonl";
+        dataUrl += "#format=seq";
       }
       return dataUrl;
     }
