@@ -2,6 +2,7 @@ import { act, render, waitFor } from "@testing-library/react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import * as threeCityjson from "three-cityjson";
 import { WidgetView, deserializeLayer } from "./widget";
 
 vi.mock("@anywidget/react", () => {
@@ -48,53 +49,8 @@ vi.mock("react-shadow", () => {
   };
 });
 
-vi.mock("three-cityjson", () => {
-  const cityJsonLayerConstructs: Array<{ data: unknown; formatArg: unknown }> =
-    [];
-  const mapViewCalls: Array<any> = [];
-  const virtualViewCalls: Array<any> = [];
-
-  class CityJSONLayer {
-    data: unknown;
-    format: string;
-
-    constructor(data: unknown, format?: "cityjson" | "cityjsonseq") {
-      cityJsonLayerConstructs.push({ data, formatArg: format });
-      this.data = data;
-      this.format = format ?? "cityjson";
-    }
-  }
-
-  const MapView = vi.fn((props: any) => {
-    mapViewCalls.push(props);
-    return React.createElement("div", { "data-testid": "map-view" });
-  });
-
-  const VirtualView = vi.fn((props: any) => {
-    virtualViewCalls.push(props);
-    return React.createElement("div", { "data-testid": "virtual-view" });
-  });
-
-  const reset = () => {
-    cityJsonLayerConstructs.length = 0;
-    mapViewCalls.length = 0;
-    virtualViewCalls.length = 0;
-    MapView.mockClear();
-    VirtualView.mockClear();
-  };
-
-  return {
-    CityJSONLayer,
-    MapView,
-    VirtualView,
-    __mocks: {
-      cityJsonLayerConstructs,
-      mapViewCalls,
-      virtualViewCalls,
-      reset,
-    },
-  };
-});
+let mapViewSpy: vi.SpyInstance;
+let virtualViewSpy: vi.SpyInstance;
 
 declare module "@anywidget/react" {
   export function __setModelState(
@@ -103,15 +59,6 @@ declare module "@anywidget/react" {
     setter?: (value: any) => void,
   ): (value: any) => void;
   export function __clearModelState(): void;
-}
-
-declare module "three-cityjson" {
-  export const __mocks: {
-    cityJsonLayerConstructs: Array<{ data: unknown; formatArg: unknown }>;
-    mapViewCalls: Array<any>;
-    virtualViewCalls: Array<any>;
-    reset: () => void;
-  };
 }
 
 const initialiseDefaults = async (
@@ -137,21 +84,8 @@ const initialiseDefaults = async (
   setModelState("click", null, vi.fn());
 };
 
-const resetThreeCityJsonMocks = async () => {
-  const module = await import("three-cityjson");
-  const reset = (module as any).__mocks.reset as () => void;
-  reset();
-};
-
 describe("widget helpers", () => {
-  beforeEach(async () => {
-    await resetThreeCityJsonMocks();
-  });
-
   it("drops nullish values before instantiating CityJSONLayer", async () => {
-    const module = await import("three-cityjson");
-    const mocks = (module as any).__mocks;
-
     const serialized = {
       type: "CityJSONLayer",
       data: { key: "value" },
@@ -161,30 +95,51 @@ describe("widget helpers", () => {
 
     const instance = deserializeLayer(serialized);
 
-    expect(instance).toBeInstanceOf(Object);
-    expect(mocks.cityJsonLayerConstructs).toHaveLength(1);
-    expect(mocks.cityJsonLayerConstructs[0]).toEqual({
-      data: { key: "value" },
-      formatArg: undefined,
+    expect(instance).toBeInstanceOf(threeCityjson.CityJSONLayer);
+    expect((instance as threeCityjson.CityJSONLayer).data).toEqual({
+      key: "value",
     });
+    expect((instance as threeCityjson.CityJSONLayer).format).toBe("cityjson");
+  });
+
+  it("supports overriding layer format", () => {
+    const serialized = {
+      type: "CityJSONLayer",
+      data: "value",
+      format: "cityjsonseq" as const,
+    };
+
+    const instance = deserializeLayer(serialized);
+
+    expect(instance).toBeInstanceOf(threeCityjson.CityJSONLayer);
+    expect((instance as threeCityjson.CityJSONLayer).format).toBe(
+      "cityjsonseq",
+    );
   });
 });
 
 describe("WidgetView", () => {
-  beforeEach(async () => {
-    await resetThreeCityJsonMocks();
+  beforeEach(() => {
+    mapViewSpy = vi
+      .spyOn(threeCityjson, "MapView")
+      .mockImplementation((props: any) => {
+        return React.createElement("div", { "data-testid": "map-view" });
+      });
+    virtualViewSpy = vi
+      .spyOn(threeCityjson, "VirtualView")
+      .mockImplementation((props: any) => {
+        return React.createElement("div", { "data-testid": "virtual-view" });
+      });
   });
 
   afterEach(async () => {
     const anywidget = await import("@anywidget/react");
     const clearModelState = (anywidget as any).__clearModelState as () => void;
     clearModelState();
+    vi.restoreAllMocks();
   });
 
   it("renders MapView when mode is map", async () => {
-    const module = await import("three-cityjson");
-    const mocks = (module as any).__mocks;
-
     await initialiseDefaults("map", [
       {
         type: "CityJSONLayer",
@@ -196,20 +151,17 @@ describe("WidgetView", () => {
     render(<WidgetView />);
 
     await waitFor(() => {
-      expect(mocks.mapViewCalls.length).toBeGreaterThan(0);
+      expect(mapViewSpy).toHaveBeenCalled();
     });
 
-    expect(mocks.virtualViewCalls).toHaveLength(0);
-    const lastCall = mocks.mapViewCalls.at(-1);
+    expect(virtualViewSpy).not.toHaveBeenCalled();
+    const lastCall = mapViewSpy.mock.calls.at(-1)![0];
     expect(lastCall.layers).toHaveLength(1);
     expect(lastCall.theme).toBe("dark");
     expect(lastCall.mapStyle).toBe("dark");
   });
 
   it("renders VirtualView when mode is virtual", async () => {
-    const module = await import("three-cityjson");
-    const mocks = (module as any).__mocks;
-
     await initialiseDefaults("virtual", [
       {
         type: "CityJSONLayer",
@@ -221,19 +173,16 @@ describe("WidgetView", () => {
     render(<WidgetView />);
 
     await waitFor(() => {
-      expect(mocks.virtualViewCalls.length).toBeGreaterThan(0);
+      expect(virtualViewSpy).toHaveBeenCalled();
     });
 
-    expect(mocks.mapViewCalls).toHaveLength(0);
-    const lastCall = mocks.virtualViewCalls.at(-1);
+    expect(mapViewSpy).not.toHaveBeenCalled();
+    const lastCall = virtualViewSpy.mock.calls.at(-1)![0];
     expect(lastCall.layers).toHaveLength(1);
     expect(lastCall.theme).toBe("light");
   });
 
   it("commits selected click payloads to the model", async () => {
-    const module = await import("three-cityjson");
-    const mocks = (module as any).__mocks;
-
     await initialiseDefaults("map", [
       {
         type: "CityJSONLayer",
@@ -255,10 +204,10 @@ describe("WidgetView", () => {
     render(<WidgetView />);
 
     await waitFor(() => {
-      expect(mocks.mapViewCalls.length).toBeGreaterThan(0);
+      expect(mapViewSpy).toHaveBeenCalled();
     });
 
-    const lastCall = mocks.mapViewCalls.at(-1);
+    const lastCall = mapViewSpy.mock.calls.at(-1)![0];
 
     await act(async () => {
       lastCall.onClick({

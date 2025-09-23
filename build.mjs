@@ -10,6 +10,7 @@ esbuild.build({
   outdir: "cityview/static/",
   assetNames: "[name]",
   format: "esm",
+  jsx: "automatic",
   // Ref https://github.com/manzt/anywidget/issues/369#issuecomment-1792376003
   define: {
     "define.amd": "false",
