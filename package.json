@@ -4,6 +4,7 @@
     "build": "node ./build.mjs",
     "dev": "nodemon --watch src/ --exec \"pnpm run build\" --ext js,json,ts,tsx,css",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "loader": "pnpm -F \"three-cityjson\""
   },
   "type": "module",
@@ -20,11 +21,16 @@
   },
   "devDependencies": {
     "@jupyter-widgets/base": "^6.0.11",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
     "@types/react": "^18.3.24",
     "@types/react-dom": "^18.3.7",
     "@types/three": "^0.162.0",
     "esbuild": "^0.19.12",
+    "jsdom": "^27.0.0",
     "nodemon": "^3.1.10",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^2.1.5"
   }
 }

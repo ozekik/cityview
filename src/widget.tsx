@@ -1,6 +1,6 @@
 import { createRender, useModelState } from "@anywidget/react";
 import { ThreeEvent } from "@react-three/fiber";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import root from "react-shadow";
 
@@ -8,7 +8,7 @@ import { CityJSONLayer, MapView, VirtualView } from "three-cityjson";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
-function deserializeLayer(serializedLayer: any) {
+export function deserializeLayer(serializedLayer: any) {
   const { type, ..._args } = serializedLayer;
 
   let args = Object.entries(_args).reduce((acc, [key, value]) => {
@@ -16,12 +16,10 @@ function deserializeLayer(serializedLayer: any) {
     return value === null ? acc : { ...acc, [key]: value };
   }, {});
 
-  console.log("args.format", args.format);
-
   return new CityJSONLayer(args.data, args.format);
 }
 
-const render = createRender(() => {
+export function WidgetView() {
   // const [initialViewState] = useModelState<any>("_initial_view_state");
   const [mode] = useModelState<string>("mode");
 
@@ -38,7 +36,6 @@ const render = createRender(() => {
   const [layers, updateLayers] = useState<CityJSONLayer[]>([]);
 
   useEffect(() => {
-    console.log("_layers", _layers);
     const deserializedLayers = _layers.map((layer) => deserializeLayer(layer));
     updateLayers(deserializedLayers);
   }, [_layers]);
@@ -81,6 +78,10 @@ const render = createRender(() => {
       )}
     </root.div>
   );
+}
+
+const render = createRender(() => {
+  return <WidgetView />;
 });
 
 export default { render };
