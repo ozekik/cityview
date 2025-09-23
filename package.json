@@ -9,22 +9,22 @@
   "type": "module",
   "dependencies": {
     "@anywidget/react": "0.0.8",
-    "@react-three/drei": "^9.112.0",
-    "@react-three/fiber": "^8.17.7",
-    "maplibre-gl": "^4.7.0",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "maplibre-gl": "^4.7.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-shadow": "^20.5.0",
+    "react-shadow": "^20.6.0",
     "three": "^0.162.0",
     "three-cityjson": "workspace:*"
   },
   "devDependencies": {
-    "@jupyter-widgets/base": "^6.0.10",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
+    "@jupyter-widgets/base": "^6.0.11",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
     "@types/three": "^0.162.0",
     "esbuild": "^0.19.12",
-    "nodemon": "^3.1.4",
-    "typescript": "^5.6.2"
+    "nodemon": "^3.1.10",
+    "typescript": "^5.9.2"
   }
 }
